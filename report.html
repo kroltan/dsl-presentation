@@ -1,0 +1,277 @@
+<html><head><style>
+@import url('https://fonts.googleapis.com/css?family=Quattrocento:400,700&display=swap&subset=latin-ext');
+
+* {
+	box-sizing: border-box;
+}
+
+body {
+	max-width: 768px;
+	margin: 0 auto;
+
+	font-family: 'Quattrocento', serif;
+}
+
+h1, h2, h3, h4, h5, h6 {
+	margin: 0;
+}
+
+h1 {
+	margin-top: 1em;
+}
+
+p {
+	margin: 0;
+}
+
+.separator {
+	display: flex;
+	align-items: center;
+	color: #595959;
+	margin: 2em;
+}
+
+.separator::before, .separator::after {
+	content: "";
+	flex: 1;
+	height: 1px;
+
+	margin-left: 5px;
+	margin-right: 5px;
+
+	background: currentColor;
+}
+
+.mapping {
+	display: grid;
+	grid-template-columns: auto 1fr;
+	grid-column-gap: 1em;
+}
+
+.mapping .key {
+	font-weight: bold;
+	white-space: nowrap;
+}
+
+.list {
+	display: flex;
+	flex-direction: column;
+}
+
+.list .value {
+	margin-left: 1em;
+}
+
+.list .value::before {
+	content: "\25b8";
+	
+	display: inline-block;
+	position: relative;
+	width: 0;
+	right: 1em;
+}
+
+.node {
+	display: grid;
+	grid-template:
+		"title          properties   annotation"
+		"description    description  description"
+		"destinations-h destinations ."
+		/ minmax(100px, auto) 1fr auto;
+	grid-gap: 1em;
+	align-items: start;
+	
+	z-index: 0;
+	position: relative;
+	margin-top: 1em;
+	margin-bottom: 1em;
+	padding: 1em;
+	break-inside: avoid;
+
+	border: 1px solid gainsboro;
+	border-radius: 3px;
+}
+
+.node:target {
+	background: #fff8dc;
+}
+
+.node.preview, a[href^="#"]:hover {
+	border-color: #ff793f;
+}
+
+.node h2 {
+	grid-area: title;
+}
+
+.node p {
+	grid-area: description;
+}
+
+.annotation {
+	grid-area: annotation;
+	
+	padding-top: 0.15em;
+	
+	font-family: monospace;
+	opacity: 0.25;
+}
+
+.annotation::before {
+  content: "#";
+}
+
+.properties {
+	grid-area: properties;
+	justify-self: end;
+}
+
+h3.properties {
+	z-index: 2;
+	
+	cursor: pointer;
+  opacity: 0.25;
+  text-decoration: underline dotted;
+  font-size: 0em !important;
+}
+
+h3.properties::before {
+	content: "";
+	width: 18px;
+	height: 18px;
+	
+	background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABIAAAASCAQAAAD8x0bcAAAAjUlEQVR4AZXStxUCMRAA0d8BF2Fy6EMtYLrAm4bw0Be0gUj1zt9MIm92V3cywcpKkCll6Ckmvg3lmPiIOT8mEka+YolfIwBuycTOLuldAXp+lYt+esBMrHEOHMXKk6IjcBITgyDtn4BF7aJF/uH5RcnDuVS+6dImmAMJ49K0jOUYeOUSPKgulbW1INOVP5yxploOSSbQAAAAAElFTkSuQmCC);
+	display: inline-block;
+}
+
+.properties.mapping {
+	z-index: 1;
+	position: absolute;
+	left: 100px;
+	padding: 0.5em;
+	margin: -0.5em;
+	
+	border: 1px solid gainsboro;
+  background: white;
+}
+
+h3.properties:not(:hover) + .properties.mapping {
+	display: none;
+}
+
+h3.destinations {
+	grid-area: destinations-h;
+}
+
+.destinations.list {
+	grid-area: destinations;
+}
+
+.node.category-Action {
+	grid-template-areas: 
+		"title          description  properties   annotation"
+		"destinations-h destinations destinations destinations";
+}
+
+.category-Action h2, .category-Action h3 {
+	font-size: 1em;
+}
+
+.category-Action h2::after {
+	content: ":";
+}
+
+.category-Action p::before, .category-Action p::after {
+	font-size: 1.4em;
+	line-height: 0.5em;
+	vertical-align: text-bottom;
+	opacity: 0.25;
+}
+
+.category-Action p:not(:empty)::before {
+	content: "\201C";
+}
+
+.category-Action p:not(:empty)::after {
+	content: "\201D";
+}
+
+.category-SideEffect {
+	grid-template: 
+		"title          description   properties   annotation"
+		"destinations-h destinations  destinations ."
+		/ 1fr auto auto auto;
+	grid-row-gap: 0;
+	
+	border: none;
+}
+
+.category-SideEffect h2 {
+	opacity: 0.25;
+}
+
+.category-SideEffect h2, .category-SideEffect h3 {
+	justify-self: end;
+	
+	font-size: 1em;
+}
+
+.category-Context {
+	grid-template-areas: 
+		"description    description  properties   annotation"
+		"destinations-h destinations destinations .";
+	grid-row-gap: 0;
+	
+	border: none;
+}
+
+.category-Context h3 {
+	font-size: 1em;
+}
+
+.category-Context h2 {
+	display: none;
+}
+
+.category-Context p {
+	font-style: italic;
+}
+				</style><script>
+function getHash(link) {
+	return new URL(link.href).hash;
+}
+
+function getAnchorTarget(link) {
+	const selector = getHash(link);
+	return document.querySelector(selector);
+}
+
+window.addEventListener('load', () => {
+	document.querySelectorAll('a[href^="#"]')
+		.forEach(link => {
+			link.addEventListener('click', event => {
+				event.preventDefault();
+
+				const selector = getHash(link);
+				const target = document.querySelector(selector);
+				const offset = 
+					target.offsetTop
+					+ target.offsetHeight / 2
+					- window.innerHeight / 2;
+
+				window.location.href = selector;
+				document.body.scrollTo(0, offset);
+			});
+
+			link.addEventListener('mouseenter', event => {
+				const target = getAnchorTarget(event.target);
+				target.classList.add('preview');
+			});
+
+			link.addEventListener('mouseleave', event => {
+				const target = getAnchorTarget(event.target);
+				target.classList.remove('preview');
+			});
+		});
+});
+				</script><meta charset="utf-8"/></head><body><div class="story"><h1>Alianca-Visita 1</h1><article class="node category-Context" id="node-02d8c500"><h2>Trocar Cen&#225;rio</h2><span class="annotation">44054E</span><p>A cena muda para Cozinha-Alianca vazia.</p><h3 class="properties">Par&#226;metros</h3><div class="properties mapping"><span class="key">Cen&#225;rio</span><span class="value">Cozinha-Alianca</span><span class="key">Transi&#231;&#227;o</span><span class="value">Esmaecer</span><span class="key">Limpar di&#225;logos e personagens</span><span class="value">Sim</span></div></article><article class="node category-Context" id="node-d817db00"><h2>Personagem</h2><span class="annotation">D263F7</span><p>Entra Armindo com express&#227;o Neutro na Esquerda, substituindo quem estava ali</p><h3 class="properties">Par&#226;metros</h3><div class="properties mapping"><span class="key">Personagem</span><span class="value">widower</span><span class="key">Pose</span><span class="value">Neutro</span><span class="key">Posi&#231;&#227;o</span><span class="value">Esquerda</span><span class="key">Substituir</span><span class="value">Mesma posi&#231;&#227;o</span></div></article><article class="node category-Action" id="node-38072b80"><h2>Escolha Uma</h2><span class="annotation">963C0D</span><p></p><h3 class="destinations multiple">Poss&#237;veis Destinos</h3><div class="destinations list"><a class="value" href="#node-0d464180">Continuar a coletar dados. </a><a class="value" href="#node-e49d5000">Elogiar a casa.</a></div></article><article class="node category-SideEffect" id="node-0d464180"><h2>Tocar Som Ambiente</h2><span class="annotation">136FB8</span><p></p><h3 class="properties">Par&#226;metros</h3><div class="properties mapping"><span class="key">Som</span><span class="value">Cozinha</span></div></article><article class="node category-Action" id="node-82960700"><h2>Armindo</h2><span class="annotation">B98CFB</span><p>Mas ent&#227;o, puxa uma cadeira pra voc&#234;, pode sentar onde quiser.</p><h3 class="properties">Par&#226;metros</h3><div class="properties mapping"><span class="key">Efeito de exibi&#231;&#227;o</span><span class="value">Nenhum</span></div></article><article class="node category-Context" id="node-e2855780"><h2>Personagem</h2><span class="annotation">C63265</span><p>Entra Armindo com express&#227;o Neutro na Esquerda, substituindo quem estava ali</p><h3 class="properties">Par&#226;metros</h3><div class="properties mapping"><span class="key">Personagem</span><span class="value">widower</span><span class="key">Pose</span><span class="value">Neutro</span><span class="key">Posi&#231;&#227;o</span><span class="value">Esquerda</span><span class="key">Substituir</span><span class="value">Mesma posi&#231;&#227;o</span></div></article><article class="node category-Action" id="node-57d51d00"><h2>Escolha Uma</h2><span class="annotation">94B52D</span><p></p><h3 class="destinations multiple">Poss&#237;veis Destinos</h3><div class="destinations list"><a class="value" href="#node-8d038380">Ficar de p&#233;.</a><a class="value" href="#node-af6ee980">Sentar-se em uma cadeira.</a></div></article><article class="node category-Context" id="node-8d038380"><h2>Trocar Cen&#225;rio</h2><span class="annotation">66C2DA</span><p>A cena muda para Cozinha-Alianca-01, os personagens acompanham.</p><h3 class="properties">Par&#226;metros</h3><div class="properties mapping"><span class="key">Cen&#225;rio</span><span class="value">Cozinha-Alianca-01</span><span class="key">Transi&#231;&#227;o</span><span class="value">Nenhuma</span><span class="key">Limpar di&#225;logos e personagens</span><span class="value">N&#227;o</span></div></article><article class="node category-Action" id="node-02534900"><h2>Voc&#234;</h2><span class="annotation">FC62F4</span><p>N&#227;o, prefiro ficar de p&#233; mesmo.</p><h3 class="properties">Par&#226;metros</h3><div class="properties mapping"><span class="key">Efeito de exibi&#231;&#227;o</span><span class="value">Nenhum</span></div></article><article class="node category-Action" id="node-3781af80"><h2>Armindo</h2><span class="annotation">D0BB65</span><p> Ok, fique do jeito que achar melhor.</p><h3 class="properties">Par&#226;metros</h3><div class="properties mapping"><span class="key">Efeito de exibi&#231;&#227;o</span><span class="value">Nenhum</span></div></article><article class="node category-Action" id="node-8fa0f800"><h2>Escolha Uma</h2><span class="annotation">33D221</span><p></p><h3 class="destinations single">Destino</h3><div class="destinations list"><a class="value" href="#node-4f7f9900">Come&#231;ar sua apresenta&#231;&#227;o.</a></div></article><article class="node category-Action" id="node-4f7f9900"><h2>Voc&#234;</h2><span class="annotation">364895</span><p>Ent&#227;o Armindo, eu estou aqui porque voc&#234; entrou em contato com o SENAR e pediu um t&#233;cnico, certo?</p><h3 class="properties">Par&#226;metros</h3><div class="properties mapping"><span class="key">Efeito de exibi&#231;&#227;o</span><span class="value">Nenhum</span></div><h3 class="destinations">Fim da hist&#243;ria</h3><div class="destinations list"></div></article><div class="separator">Quebra de sequ&#234;ncia</div><article class="node category-SideEffect" id="node-af6ee980"><h2>Incrementar Valor</h2><span class="annotation">F98A39</span><p>Rel += 5</p><h3 class="properties">Par&#226;metros</h3><div class="properties mapping"><span class="key">Vari&#225;vel</span><span class="value">Rel</span><span class="key">Incremento</span><span class="value">5</span></div></article><article class="node category-Context" id="node-24beaf00"><h2>Trocar Cen&#225;rio</h2><span class="annotation">33324B</span><p>A cena muda para Cozinha-Alianca-03, os personagens acompanham.</p><h3 class="properties">Par&#226;metros</h3><div class="properties mapping"><span class="key">Cen&#225;rio</span><span class="value">Cozinha-Alianca-03</span><span class="key">Transi&#231;&#227;o</span><span class="value">Nenhuma</span><span class="key">Limpar di&#225;logos e personagens</span><span class="value">N&#227;o</span></div></article><article class="node category-Action" id="node-9a0e7480"><h2>Voc&#234;</h2><span class="annotation">F425A5</span><p> Obrigado, vou me sentar aqui ent&#227;o.</p><h3 class="properties">Par&#226;metros</h3><div class="properties mapping"><span class="key">Efeito de exibi&#231;&#227;o</span><span class="value">Nenhum</span></div><h3 class="destinations single">Destino</h3><div class="destinations list"><a class="value" href="#node-3781af80">Pr&#243;ximo</a></div></article><div class="separator">Quebra de sequ&#234;ncia</div><article class="node category-Action" id="node-e49d5000"><h2>Voc&#234;</h2><span class="annotation">4DD49A</span><p> Nossa, que casa bonita voc&#234; tem! Meus parab&#233;ns!</p><h3 class="properties">Par&#226;metros</h3><div class="properties mapping"><span class="key">Efeito de exibi&#231;&#227;o</span><span class="value">Nenhum</span></div></article><article class="node category-Context" id="node-a47bf100"><h2>Personagem</h2><span class="annotation">FF1609</span><p>Entra Armindo com express&#227;o Feliz na Esquerda, substituindo quem estava ali</p><h3 class="properties">Par&#226;metros</h3><div class="properties mapping"><span class="key">Personagem</span><span class="value">widower</span><span class="key">Pose</span><span class="value">Feliz</span><span class="key">Posi&#231;&#227;o</span><span class="value">Esquerda</span><span class="key">Substituir</span><span class="value">Mesma posi&#231;&#227;o</span></div></article><article class="node category-Action" id="node-19cbb680"><h2>Armindo</h2><span class="annotation">3F7DAE</span><p> Haha, muito obrigado! Tento deixar tudo sempre em ordem.</p><h3 class="properties">Par&#226;metros</h3><div class="properties mapping"><span class="key">Efeito de exibi&#231;&#227;o</span><span class="value">Nenhum</span></div><h3 class="destinations single">Destino</h3><div class="destinations list"><a class="value" href="#node-0d464180">Pr&#243;ximo</a></div></article></div></body></html>

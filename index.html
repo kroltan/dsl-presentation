@@ -1,0 +1,383 @@
+<!doctype html>
+<html lang="pt">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+    <title>Linguagens de Domínio Específico</title>
+
+    <link rel="stylesheet" href="dist/reset.css">
+    <link rel="stylesheet" href="dist/reveal.css">
+    <link rel="stylesheet" href="dist/theme/black.css" id="theme">
+
+    <!-- Theme used for syntax highlighted code -->
+    <link rel="stylesheet" href="plugin/highlight/monokai.css" id="highlight-theme">
+
+    <style>
+        .reveal table.cross td {
+            text-align: center; }
+
+        .reveal table.cross td:first-child {
+            border-right: 1px solid;
+            text-align: right; }
+
+        .reveal table.cross tr:not(:first-child) td {
+            border-bottom-style: none; }
+
+        iframe {
+            width: 100%;
+            height: 50vh;
+            filter: invert(1) contrast(0.8);
+        }
+    </style>
+</head>
+<body>
+<div class="reveal">
+    <div class="slides">
+        <section>
+            <h1>Linguagens de Domínio Específico</h1>
+            <p>por Leonardo Giovanni Scur</p>
+        </section>
+
+        <section>
+            <p>Do inglês "Domain Specific Language"</p>
+            <p>Abreviarei como DSL</p>
+        </section>
+
+        <section>
+            <h2>O que é um domínio</h2>
+            <p>Conjunto de conceitos de uma área do conhecimento</p>
+            <p class="fragment">Exemplo: trânsito</p>
+            <ul>
+                <li class="fragment">Veículo</li>
+                <li class="fragment">Estrada</li>
+                <li class="fragment">Junção</li>
+                <li class="fragment">Semáforo</li>
+            </ul>
+        </section>
+
+        <section>
+            <ul>
+                <li>Definição</li>
+                <li>Tipos de DSL</li>
+                <li>Exemplos</li>
+                <li>Como criar uma DSL?</li>
+            </ul>
+        </section>
+
+        <section>
+            <h2>Definição</h2>
+
+            <section>
+                <p>
+                    "A domain-specific language is a computer language
+                    specialized to a particular application domain."
+                </p>
+            </section>
+            <section>
+                <ul>
+                    <li>O domínio faz parte da linguagem;</li>
+                    <li class="fragment">Conjunto de termos e conceitos coeso;</li>
+                    <li class="fragment">Não precisa resolver problemas fora do domínio;</li>
+                    <li class="fragment">Não precisa nem ser de programação!</li>
+                </ul>
+            </section>
+        </section>
+
+        <section>
+            <h2>Tipos de DSL</h2>
+            <table class="cross">
+                <tr>
+                    <td> </td>
+                    <td class="fragment fade-in-then-semi-out">Embarcada</td>
+                    <td class="fragment fade-in-then-semi-out">Externa</td>
+                </tr>
+                <tr>
+                    <td class="fragment fade-in-then-semi-out">Marcação</td>
+                    <td>·</td>
+                    <td>·</td>
+                </tr>
+                <tr>
+                    <td class="fragment">Programação</td>
+                    <td>·</td>
+                    <td>·</td>
+                </tr>
+            </table>
+
+            <aside class="notes">
+                <ul>
+                    <li>Embarcada: Dentro de outra linguagem</li>
+                    <li>Externa: Pode ser usada com qualquer hospedeiro</li>
+                    <li>Marcação: Define dados, não lógica</li>
+                    <li>Programação: Contém algum tipo de lógica</li>
+                </ul>
+            </aside>
+        </section>
+
+        <section>
+            <h2>Exemplos</h2>
+        </section>
+
+        <section>
+            <h2>HTML</h2>
+
+            <section>
+                <p>Representa a hierarquia de uma interface gráfica</p>
+                <ul>
+                    <li>Marcação</li>
+                    <li>Externa</li>
+                </ul>
+
+                <aside class="notes">
+                    O domínio do HTML é a organização de informação, ou hipertexto
+                </aside>
+            </section>
+
+            <section>
+                <pre>
+                    <code data-trim data-noescape class="hljs html">
+                        &lt;article&gt;
+                            &lt;h2&gt;Artigo Bacana&lt;/h2&gt;
+
+                            &lt;img src="montanhas.png" /&gt;
+
+                            &lt;p&gt;Parágrafo com conteúdo&lt;/p&gt;
+                            &lt;p&gt;Outro parágrafo&lt;/p&gt;
+
+                            &lt;aside&gt;Aprenda mais na <a href="https://developer.mozilla.org/en-US/docs/Glossary/HTML">MDN</a>!&lt;/aside&gt;
+                        &lt;/article&gt;
+                    </code>
+                </pre>
+            </section>
+        </section>
+
+        <section>
+            <h2>JSX (e similares)</h2>
+
+            <section>
+                <p>Similar ao HTML, mas suporta lógica de programação</p>
+                <ul>
+                    <li>Marcação</li>
+                    <li>Embarcada</li>
+                </ul>
+
+                <aside class="notes">
+                    <ul>
+                        <li>Suporta a definição de novos elementos</li>
+                        <li>É um pouco mais geral, representa qualquer informação hierárquica</li>
+                    </ul>
+                </aside>
+            </section>
+
+            <section>
+                <pre>
+                    <code data-trim data-noescape class="hljs html">
+                        &lt;Article
+                            title="Artigo Bacana"
+                            hero="montanhas.png"
+                        &gt;
+                            Parágrafo com conteúdo
+
+                            Outro parágrafo
+                        &lt;/Article&gt;
+                    </code>
+                </pre>
+
+                <aside class="notes">
+                    <ul>
+                        <li>JSX pode ter JS dentro de JSX recursivamente</li>
+                        <li>Elemento pai pode transformar elementos filhos</li>
+                    </ul>
+                </aside>
+            </section>
+        </section>
+
+        <section>
+            <h2>SQL</h2>
+
+            <section>
+                <p>Representa operações de lógica relacional</p>
+                <ul>
+                    <li>Programação</li>
+                    <li>Externa</li>
+                </ul>
+
+                <aside class="notes">
+                    O domínio são as tabelas, linhas, colunas, e suas relações
+                </aside>
+            </section>
+
+            <section>
+                <pre>
+                    <code data-trim data-noescape class="hljs sql">
+                        SELECT (`id`, `name`, `birth`, p.title AS `title`)
+                        FROM `users` AS u
+                        WHERE u.birth > "1997-07-29"
+                        LEFT JOIN `professions` AS p
+                        ON p.id = u.profession;
+                    </code>
+                </pre>
+            </section>
+        </section>
+
+        <section>
+            <h2>ReactiveX</h2>
+
+            <section>
+                <p>Representa operações sobre sequências de eventos</p>
+                <ul>
+                    <li>Programação</li>
+                    <li>Embarcada</li>
+                </ul>
+
+                <aside class="notes">
+                    O domínio são os eventos e como eles se propagam
+                </aside>
+            </section>
+
+            <section>
+                <pre>
+                    <code data-trim data-noescape class="hljs js">
+                        const selectAll$ = fromEvent("click").pipe(
+                            filter(e => e.ctrlKey),
+                            bufferWithTimeOrCount(500, 2),
+                            filter(es => es.length == 2),
+                            map(es => es[1])
+                        );
+                    </code>
+                </pre>
+            </section>
+        </section>
+
+        <section>
+            <h2>Bônus: Storyline</h2>
+
+            <section>
+                <p>Representa um roteiro interativo</p>
+                <ul>
+                    <li>Programação</li>
+                    <li>Externa</li>
+                    <li class="fragment"><b>Visual!</b></li>
+                </ul>
+            </section>
+
+            <section>
+                <img src="img/story.png" alt="Recorte de tela do roteiro visual">
+            </section>
+
+            <section>
+                <img src="img/ingame.gif" alt="Exemplo de jogo gerado a partir do roteiro"/>
+            </section>
+
+            <section>
+                <iframe src="report.html"></iframe>
+            </section>
+        </section>
+
+        <section>
+            <table class="cross">
+                <tr>
+                    <td></td>
+                    <td>Embarcada</td>
+                    <td>Externa</td>
+                </tr>
+                <tr>
+                    <td>Marcação</td>
+                    <td class="fragment fade-in-then-semi-out">JSX</td>
+                    <td class="fragment fade-in-then-semi-out">HTML</td>
+                </tr>
+                <tr>
+                    <td>Programação</td>
+                    <td class="fragment fade-in-then-semi-out">ReactiveX</td>
+                    <td class="fragment fade-in-then-semi-out">SQL, Storyline</td>
+                </tr>
+            </table>
+            <p class="fragment"></p>
+        </section>
+
+        <section>
+            <h2>Como criar uma DSL?</h2>
+        </section>
+
+        <section>
+            <ol>
+                <li>Definir o domínio</li>
+                <li class="fragment">Lógica ou dados?</li>
+                <li class="fragment">Público alvo</li>
+                <li class="fragment">Mão na massa!</li>
+            </ol>
+        </section>
+
+        <section>
+            <section>
+                <h2>Destrinchando o Storyline</h2>
+            </section>
+
+            <section>
+                <h2>O Domínio</h2>
+                <ul>
+                    <li>Falas</li>
+                    <li>Decisões</li>
+                    <li>Condições</li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>Lógica</h2>
+                <ul>
+                    <li>Ações afetam possiblidades</li>
+                    <li>Roteiro não afeta roteiro</li>
+                    <li>Sequenciamento</li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>Público alvo</h2>
+                <ul>
+                    <li>Equipe</li>
+                    <li>Validação pelo cliente</li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>Resultado</h2>
+                <ul>
+                    <li>Grafo cíclico direcionado</li>
+                    <li>Não define recursos</li>
+                    <li>Sintaxe Visual</li>
+                </ul>
+            </section>
+        </section>
+
+        <section>
+            <h1>Perguntas e discussão</h1>
+        </section>
+
+        <section>
+            <h2>Obrigado!</h2>
+            <p>Se puder, <a href="https://docs.google.com/forms/d/e/1FAIpQLScJZGIIA1neOv2lOVCiQ-kXHz8IKdhmhG3dLK_1mv34Kv-Cpw/viewform?usp=sf_link">avalie</a>!</p>
+            <img src="img/feedback.png" alt="QR do link de avaliação"/>
+            <p>Slides disponíveis em</p>
+            <a href="https://kroltan.me/talk/dotknows-dsl">https://kroltan.me/talk/dotknows-dsl</a>
+        </section>
+    </div>
+</div>
+
+<script src="dist/reveal.js"></script>
+<script src="plugin/notes/notes.js"></script>
+<script src="plugin/markdown/markdown.js"></script>
+<script src="plugin/highlight/highlight.js"></script>
+<script>
+    // More info about initialization & config:
+    // - https://revealjs.com/initialization/
+    // - https://revealjs.com/config/
+    Reveal.initialize({
+        hash: true,
+        controls: true,
+
+        // Learn about plugins: https://revealjs.com/plugins/
+        plugins: [ RevealMarkdown, RevealHighlight, RevealNotes ]
+    });
+</script>
+</body>
+</html>
